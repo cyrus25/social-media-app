@@ -1,8 +1,8 @@
 const express=require('express');  //to update nodejs- npm install -g npm
 const app=express();
 const port=8000;
-
 const expressLayouts=require('express-ejs-layouts');
+const db=require('./config/mongoose');
 
 app.use(express.static('./assets'));  //including css js and images files
 
