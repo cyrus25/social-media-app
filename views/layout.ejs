@@ -1,0 +1,15 @@
+<html>
+    <head>
+     <title>
+         <%= title %>
+     </title>
+
+    </head>
+    <body>
+        <%- include('_header'); %>
+        
+        <%- body %>   <!-- this is the variable part,the part from other ejs file like home is renderred here.the above and below parts are constants. -->
+
+        <%- include('_footer'); %>
+    </body>
+</html>

@@ -1,9 +1,14 @@
-const express=require('express');
+const express=require('express');  //to update nodejs- npm install -g npm
 const app=express();
 const port=8000;
 
-//setting routes
-app.use('/',require('./routes'));
+const expressLayouts=require('express-ejs-layouts');
+
+
+app.use(expressLayouts);
+
+//setting routes                       
+app.use('/',require('./routes'));            //for commiting git add . then git commit -m '   '
 
 //setting view engine
 app.set('view engine','ejs');
