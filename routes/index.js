@@ -7,7 +7,9 @@ console.log('router loaded');
 
 
 router.get('/', homeController.home);
-router.get('/cyrus',homeController.home);
+router.get('/cyrus',homeController.homes);
+
+
 router.use('/users', require('./users'));
 
 // for anty further routes, access from here
