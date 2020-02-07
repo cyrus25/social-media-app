@@ -1,10 +1,17 @@
 const express=require('express');  //to update nodejs- npm install -g npm
 const cookieParser=require('cookie-parser');
+const bodyParser=require('body-parser');
 const app=express();
 const port=8000;
 const expressLayouts=require('express-ejs-layouts');
 const db=require('./config/mongoose');
 
+//used for session cookie
+const session=require('express-session');
+const passport = require('passport');
+const passportLocal=require('./config/passport-local-strategy');
+const MongoStore=require('connect-mongo')(session);
+//app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
 
@@ -23,12 +30,47 @@ app.use(expressLayouts);
 app.set('layout extractStyles', true);
 app.set('layout extractScripts', true);
 
-//setting routes                       
-app.use('/',require('./routes'));            //for commiting git add . then git commit -m '   '
+
 
 //setting view engine
 app.set('view engine','ejs');
 app.set('views','./views');
+
+
+//mongo store is used to store the seesion cookie in db
+app.use(session({
+  name: 'codeial',
+  //todo change secret before deployment
+  secret: 'blahsomething',
+  saveUninitialized: false,
+  resave: false,
+  cookie:{
+      maxAge: (1000 * 60 * 100)
+  },
+  store: new MongoStore({
+
+     mongooseConnection: db,
+     autoRemove: 'disabled'
+
+  },
+  function(err){
+      console.log(err||"connected to mongo store");
+  }
+  )
+
+})
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+app.use(passport.setAuthenticatedUser);
+
+
+//setting routes                       
+app.use('/',require('./routes'));            //for commiting git add . then git commit -m '   '
 
 app.listen(port,function(err){
     if(err)
