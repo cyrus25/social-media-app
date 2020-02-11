@@ -10,6 +10,10 @@ router.get('/', homeController.home);
 router.get('/cyrus',homeController.homes);
 
 
+
+
+router.use('/posts', require('./posts'));
+
 router.use('/users', require('./users'));
 
 
