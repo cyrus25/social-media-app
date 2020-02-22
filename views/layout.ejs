@@ -1,19 +1,67 @@
+
+
 <html>
     <head>
-     <title>
-         <%= title %>
-     </title>
+        <title>
+            <%= title  %>
+        </title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+        <link rel="stylesheet" href="/css/layout.css">
+        <link rel="stylesheet" href="/css/header.css">
+        <link rel="stylesheet" href="/css/footer.css">
 
-       <link rel="stylesheet" href="/css/layout.css">
-       <%- style %>
-    </head>
-    <body>
-        <%- include('_header'); %>
+        <%- style %>
         
-        <%- body %>   <!-- this is the variable part,the part from other ejs file like home is renderred here.the above and below parts are constants. -->
+    </head>
+
+    <body>
+           
+
+        
+        <%- include('_header'); %>
+
+        <% if(flash.success && flash.success.length > 0){ %>
+            <h5>
+                <%= flash.success %>
+            </h5>    
+        <% } %>
+
+        
+        <main id="layout-main">
+            <%- body %>   <!-- this is the variable part,the part from other ejs file like home is renderred here.the above and below parts are constants. -->
+
+        </main>
+
 
         <%- include('_footer'); %>
 
-        <% -script %>
+        <%- script %>
+
+        <script>
+            <% if (flash.success && flash.success.length > 0) {% >
+                new Noty({
+                    theme: 'relax',
+                    text: "<%= flash.success %>",
+                    type: 'success',
+                    layout: 'topRight',
+                    timeout: 1500
+                    
+                }).show();    
+            <%} %>
+
+            <% if (flash.error && flash.error.length > 0) {%>
+                new Noty({
+                    theme: 'relax',
+                    text: "<%= flash.error %>",
+                    type: 'error',
+                    layout: 'topRight',
+                    timeout: 1500
+                    
+                }).show();    
+            <%} %>
+        </script>
+
+        
     </body>
 </html>

@@ -11,17 +11,15 @@ const session=require('express-session');
 const passport = require('passport');
 const passportLocal=require('./config/passport-local-strategy');
 const MongoStore=require('connect-mongo')(session);
-const sassMiddleware=require('node-sass-middleware');  
-
+const sassMiddleware =require('node-sass-middleware');
+const flash=require('connect-flash');
+const customWare=require('./config/middleware');
 app.use(sassMiddleware({
-
-     src: '/assets/scc',
-     dest: '/assests/css',
-     debug: true,
-     outputStyle: 'extended',
-     prefix: '/css'
-
-      
+    src: './assets/scss',
+    dest: './assets/css',
+    debug: true,
+    outputStyle: 'extended',
+    prefix: '/css'
 }));
 
 
@@ -84,6 +82,9 @@ app.use(passport.session());
 
 app.use(passport.setAuthenticatedUser);
 
+
+app.use(flash());  //uses session cookies
+app.use(customWare.setFlash);
 
 //setting routes                       
 app.use('/',require('./routes'));            //for commiting git add . then git commit -m '   '

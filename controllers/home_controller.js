@@ -1,5 +1,6 @@
 const Post = require('../models/post');
-module.exports.home=function(req,res){
+const User=require('../models/user');
+//module.exports.home=function(req,res){
 
  //return res.end('<h1>HELLO!</h1>');
 
@@ -23,22 +24,42 @@ module.exports.home=function(req,res){
   });*/
 
 
-//populate the user of each post,without populating post.user in home.ejs was only showing the user id
-  Post.find({}).populate('user').exec(function(err,posts){   //put find({name:'some name in database'}) and see result
+//populate the user of each post,without populating ,posts.user in home.ejs was only showing the user id
 
-  if(err)
-  {
-      console.log('error fetching from db');
-      return;
+module.exports.home=async function(req,res){      //async await
+
+  try{
+
+  let posts=await Post.find({})
+  .populate('user')
+  .populate({
+    path:'comments',
+    populate:{
+      path:'user'
+    }
+  });
+   //put find({name:'some name in database'}) and see result
+
+  
+
+  let users=await User.find({});
+
+    res.render('home',{
+      title:'CODEIAL',
+      posts: posts,
+      all_users:users
+    });
   }
+  catch(err){
+    console.log("error=",err);
+    return;
+  }
+  
+  
 
-  res.render('home',{
-     title:'CODEIAL',
-     posts: posts
- 
- });
+  
 
-})
+
 
 
 
