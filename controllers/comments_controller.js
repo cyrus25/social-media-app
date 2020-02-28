@@ -17,13 +17,14 @@ module.exports.create = async function(req, res){
 
                 post.comments.push(comment);
                 post.save();
-
+                req.flash('success','Comment Added!');
                 res.redirect('/');
         
         }
 
     }catch(err){
-        console.log("error",err);
+        //console.log("error",err);
+        req.flash('error',err);
         return;
     }
 
@@ -50,19 +51,21 @@ try{
 
           let post=await Post.findByIdAndUpdate(postId, { $pull: 
             {comments:req.params.id }});
+            req.flash('success','Comment Deleted');
 
                  return res.redirect('back');
 
-          
-
+                
 
     }else{
+        req.flash('error','you cannot delete this comment');
         return res.redirect('back');
     }
 
 }catch(err)
 {
-    console.log('error',err);
+   // console.log('error',err);
+   req.flash('error',err);
     return;
 }
 
