@@ -35,6 +35,8 @@ app.use(cookieParser()); //npm install cookie-parser
 
 app.use(express.static('./assets'));  //including css js and images files
 
+//make the uploads path available to browser
+app.use('/uploads',express.static(__dirname + '/uploads'));  //codeial+uploads availabe in /uploads route
 
 
 app.use(expressLayouts);
